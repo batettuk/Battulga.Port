@@ -1,15 +1,8 @@
-.contact-section {
-  margin: auto;
-  padding-bottom: 150px;
-  margin-top: 0;
+.footer-wrapper {
+  width: 100%;
   position: relative;
-  z-index: 1;
-  background-color: var(--backgroundColor);
-  min-height: 60vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
   overflow: hidden;
+  background-color: var(--backgroundColor);
 }
 .contact-vanta-bg {
   position: absolute;
@@ -19,9 +12,18 @@
   height: 100%;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.85;
-  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);
+}
+.contact-section {
+  margin: auto;
+  padding-bottom: 150px;
+  margin-top: 0;
+  position: relative;
+  z-index: 1;
+  background-color: transparent !important;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 .contact-container {
   position: relative;

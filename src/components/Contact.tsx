@@ -29,10 +29,10 @@ const Contact = () => {
           scale: 1.0,
           scaleMobile: 1.0,
           color: 0xc2a4ff,
-          color2: 0xa51ef0,
+          color2: 0xb020ff,
           backgroundColor: 0x0b080c,
-          size: 3.0,
-          spacing: 35.0,
+          size: 4.5,
+          spacing: 30.0,
           showLines: true,
         });
       } catch (err) {
@@ -99,9 +99,10 @@ const Contact = () => {
   }, []);
 
   return (
-    <div className="contact-section section-container" id="contact">
+    <footer className="footer-wrapper" id="contact">
       <div ref={vantaRef} className="contact-vanta-bg" />
-      <div className="contact-container">
+      <div className="contact-section section-container">
+        <div className="contact-container">
         <h3>{config.developer.fullName}</h3>
         <div className="contact-flex">
           <div className="contact-box">
@@ -165,7 +166,8 @@ const Contact = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </footer>
   );
 };
 
