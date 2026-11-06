@@ -93,7 +93,12 @@ export function setCharTimeline(
       .to(".character-rim", { opacity: 0, duration: 0.3 }, 0)
       .to(".landing-container", { opacity: 0, duration: 0.4 }, 0)
       .to(".landing-container", { y: "40%", duration: 0.8 }, 0)
-      .fromTo(".about-me", { y: "-50%" }, { y: "0%" }, 0);
+      .fromTo(
+        ".about-me",
+        { opacity: 0, y: 60 },
+        { opacity: 1, y: 0, duration: 0.8 },
+        0.2
+      );
 
     tl2
       .to(
@@ -144,7 +149,12 @@ export function setCharTimeline(
       .to(".character-rim", { opacity: 0, duration: 0.3 }, 0)
       .to(".landing-container", { opacity: 0, duration: 0.4 }, 0)
       .to(".landing-container", { y: "30%", duration: 0.8 }, 0)
-      .fromTo(".about-me", { y: "-30%" }, { y: "0%" }, 0);
+      .fromTo(
+        ".about-me",
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 0.8 },
+        0.2
+      );
 
     tl2
       .to(

@@ -20,12 +20,25 @@
   z-index: 9;
 }
 
-.what-box h2 {
-  font-size: calc(4vw + 25px);
-  line-height: calc(4vw + 20px);
+.what-box h2,
+.what-title {
+  font-size: calc(3.6vw + 20px);
+  line-height: calc(3.6vw + 18px);
   font-weight: 600;
-  margin-right: 10%;
+  margin-right: 16%;
   margin-bottom: 100px;
+}
+
+.what-title .title-line1,
+.what-title .title-line2 {
+  display: block;
+  white-space: nowrap;
+}
+
+.what-title .what-char {
+  display: inline-block;
+  opacity: 1;
+  visibility: inherit;
 }
 
 .hat-h2 {
@@ -69,9 +82,13 @@
 }
 
 .what-content h3 {
-  font-size: 35px;
-  letter-spacing: 1px;
-  margin: 0;
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+  margin: 0 0 6px 0;
+  white-space: pre-line;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 
 .what-content p {
@@ -286,7 +303,9 @@
   }
 
   .what-content h3 {
-    font-size: 28px;
+    font-size: 24px;
+    line-height: 1.2;
+    white-space: pre-line;
   }
 
   .what-content {
@@ -412,7 +431,9 @@
   }
 
   .what-content h3 {
-    font-size: 22px;
+    font-size: 20px;
+    line-height: 1.25;
+    white-space: pre-line;
   }
 
   .what-content p {
@@ -497,7 +518,9 @@
   }
 
   .what-content h3 {
-    font-size: 26px;
+    font-size: 22px;
+    line-height: 1.25;
+    white-space: pre-line;
   }
 
   .what-content p {

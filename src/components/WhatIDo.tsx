@@ -30,10 +30,31 @@ const WhatIDo = () => {
   return (
     <div className="whatIDO">
       <div className="what-box">
-        <h2 className="title">
-          {t.whatIDo.titlePrefix}<span className="hat-h2">{t.whatIDo.titleHat}</span>
-          <div>
-            &nbsp;{t.whatIDo.titleI}<span className="do-h2">{t.whatIDo.titleDo}</span>
+        <h2 className="what-title">
+          <div className="title-line title-line1">
+            <span className="what-char">{t.whatIDo.titlePrefix}</span>
+            {t.whatIDo.titleHat.split("").map((c, i) => (
+              <span key={i} className="what-char hat-h2">
+                {c}
+              </span>
+            ))}
+          </div>
+          <div className="title-line title-line2">
+            {t.whatIDo.titleI && (
+              <>
+                {t.whatIDo.titleI.split("").map((c, i) => (
+                  <span key={`i-${i}`} className="what-char title-i">
+                    {c}
+                  </span>
+                ))}
+                <span className="what-char">&nbsp;</span>
+              </>
+            )}
+            {t.whatIDo.titleDo.split("").map((c, i) => (
+              <span key={`do-${i}`} className="what-char do-h2">
+                {c}
+              </span>
+            ))}
           </div>
         </h2>
       </div>

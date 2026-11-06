@@ -75,5 +75,32 @@ export default function setSplitText() {
     );
   });
 
+  const whatTitle = document.querySelector(".what-title") as ParaElement | null;
+  if (whatTitle) {
+    if (whatTitle.anim) {
+      whatTitle.anim.progress(1).kill();
+    }
+    const whatChars = whatTitle.querySelectorAll(".what-char");
+    if (whatChars.length > 0) {
+      whatTitle.anim = gsap.fromTo(
+        whatChars,
+        { autoAlpha: 0, y: 35, rotate: 6 },
+        {
+          autoAlpha: 1,
+          duration: 0.6,
+          ease: "power2.out",
+          y: 0,
+          rotate: 0,
+          stagger: 0.015,
+          scrollTrigger: {
+            trigger: ".whatIDO",
+            toggleActions: ToggleAction,
+            start: TriggerStart,
+          },
+        }
+      );
+    }
+  }
+
   ScrollTrigger.addEventListener("refresh", () => setSplitText());
 }
