@@ -74,10 +74,8 @@ export const handleHeadRotation = (
       );
     }
   } else {
-    if (window.innerWidth > 1024) {
-      // Look down directly at the MacBook screen & keyboard
-      headBone.rotation.x = lerp(headBone.rotation.x, 0.28, 0.04);
-      headBone.rotation.y = lerp(headBone.rotation.y, -0.06, 0.04);
-    }
+    // Look down directly at the MacBook screen & keyboard
+    headBone.rotation.x = lerp(headBone.rotation.x, 0.28, 0.04);
+    headBone.rotation.y = lerp(headBone.rotation.y, -0.06, 0.04);
   }
 };

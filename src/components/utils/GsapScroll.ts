@@ -70,70 +70,175 @@ export function setCharTimeline(
     monitor.material.opacity = 0.4;
   }
   let neckBone = character?.getObjectByName("spine005");
-  if (window.innerWidth > 1024) {
-    if (character) {
-      tl1
-        .fromTo(character.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
-        .fromTo(character.position, { x: 0 }, { x: -2.2, duration: 1 }, 0)
-        .to(camera.position, { z: 22 }, 0)
-        .to(".character-rim", { opacity: 0, duration: 0.3 }, 0)
-        .to(".landing-container", { opacity: 0, duration: 0.4 }, 0)
-        .to(".landing-container", { y: "40%", duration: 0.8 }, 0)
-        .fromTo(".about-me", { y: "-50%" }, { y: "0%" }, 0);
+  if (!character) return;
 
-      tl2
-        .to(
-          camera.position,
-          { z: 75, y: 8.4, duration: 6, delay: 2, ease: "power3.inOut" },
-          0
-        )
-        .to(".about-section", { y: "25%", duration: 6 }, 0)
-        .to(".about-section", { opacity: 0, delay: 5.0, duration: 1.8 }, 0)
-        .to(character.position, { x: -3.0, delay: 2, duration: 5 }, 0)
-        .fromTo(
-          ".character-model",
-          { pointerEvents: "inherit" },
-          { pointerEvents: "none", delay: 2 },
-          0
-        )
-        .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0)
-        .to(neckBone!.rotation, { x: 0.45, delay: 2, duration: 3 }, 0);
+  const isDesktop = window.innerWidth > 1024;
+  const isTablet = window.innerWidth >= 768 && window.innerWidth <= 1024;
 
-      if (monitor?.material) {
-        tl2.to(monitor.material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0);
-      }
-      if (screenLight?.material) {
-        tl2.to(screenLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0);
-      }
+  if (isDesktop) {
+    tl1
+      .fromTo(character.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
+      .fromTo(character.position, { x: 0 }, { x: -2.2, duration: 1 }, 0)
+      .to(camera.position, { z: 22 }, 0)
+      .to(".character-rim", { opacity: 0, duration: 0.3 }, 0)
+      .to(".landing-container", { opacity: 0, duration: 0.4 }, 0)
+      .to(".landing-container", { y: "40%", duration: 0.8 }, 0)
+      .fromTo(".about-me", { y: "-50%" }, { y: "0%" }, 0);
 
-      tl2.fromTo(
-        ".what-box-in",
-        { opacity: 0, y: 35 },
-        { opacity: 1, y: 0, duration: 1.8, delay: 5.5, ease: "power2.out" },
+    tl2
+      .to(
+        camera.position,
+        { z: 75, y: 8.4, duration: 6, delay: 2, ease: "power3.inOut" },
+        0
+      )
+      .to(".about-section", { y: "25%", duration: 6 }, 0)
+      .to(".about-section", { opacity: 0, delay: 5.0, duration: 1.8 }, 0)
+      .to(character.position, { x: -3.0, delay: 2, duration: 5 }, 0)
+      .fromTo(
+        ".character-model",
+        { pointerEvents: "inherit" },
+        { pointerEvents: "none", delay: 2 },
+        0
+      )
+      .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0)
+      .to(neckBone!.rotation, { x: 0.45, delay: 2, duration: 3 }, 0);
+
+    if (monitor?.material) {
+      tl2.to(monitor.material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0);
+    }
+    if (screenLight?.material) {
+      tl2.to(screenLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0);
+    }
+
+    tl2.fromTo(
+      ".what-box-in",
+      { opacity: 0, y: 35 },
+      { opacity: 1, y: 0, duration: 1.8, delay: 5.5, ease: "power2.out" },
+      0
+    );
+
+    tl3
+      .fromTo(
+        ".character-model",
+        { y: "0%" },
+        { y: "-100%", duration: 4, ease: "none", delay: 1 },
+        0
+      )
+      .fromTo(".whatIDO", { y: 0 }, { y: "15%", duration: 2 }, 0)
+      .to(character.rotation, { x: -0.04, duration: 2, delay: 1 }, 0);
+  } else if (isTablet) {
+    tl1
+      .fromTo(character.rotation, { y: 0 }, { y: 0.65, duration: 1 }, 0)
+      .fromTo(character.position, { x: 0, y: 0 }, { x: -2.85, y: 0.15, duration: 1 }, 0)
+      .to(camera.position, { z: 25.2, y: 13.0 }, 0)
+      .to(".character-rim", { opacity: 0, duration: 0.3 }, 0)
+      .to(".landing-container", { opacity: 0, duration: 0.4 }, 0)
+      .to(".landing-container", { y: "30%", duration: 0.8 }, 0)
+      .fromTo(".about-me", { y: "-30%" }, { y: "0%" }, 0);
+
+    tl2
+      .to(
+        camera.position,
+        { z: 82, y: 8.6, duration: 6, delay: 2, ease: "power3.inOut" },
+        0
+      )
+      .to(".about-section", { y: "20%", duration: 6 }, 0)
+      .to(".about-section", { opacity: 0, delay: 5.0, duration: 1.8 }, 0)
+      .to(character.position, { x: -3.5, y: 0.1, delay: 2, duration: 5 }, 0)
+      .fromTo(
+        ".character-model",
+        { pointerEvents: "inherit" },
+        { pointerEvents: "none", delay: 2 },
+        0
+      )
+      .to(character.rotation, { y: 0.85, x: 0.12, delay: 3, duration: 3 }, 0)
+      .to(neckBone!.rotation, { x: 0.45, delay: 2, duration: 3 }, 0);
+
+    if (monitor?.material) {
+      tl2.to(monitor.material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0);
+    }
+    if (screenLight?.material) {
+      tl2.to(screenLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0);
+    }
+
+    tl2.fromTo(
+      ".what-box-in",
+      { opacity: 0, y: 35 },
+      { opacity: 1, y: 0, duration: 1.8, delay: 5.5, ease: "power2.out" },
+      0
+    );
+
+    tl3
+      .fromTo(
+        ".character-model",
+        { y: "0%" },
+        { y: "-100%", duration: 4, ease: "none", delay: 1 },
+        0
+      )
+      .fromTo(".whatIDO", { y: 0 }, { y: "15%", duration: 2 }, 0)
+      .to(character.rotation, { x: -0.04, duration: 2, delay: 1 }, 0);
+  } else {
+    // Mobile phones (< 768px)
+    tl1
+      .fromTo(character.rotation, { y: 0 }, { y: 0.45, duration: 1 }, 0)
+      .fromTo(
+        character.position,
+        { x: 0, y: 0 },
+        { x: 0, y: 2.25, duration: 1 },
+        0
+      )
+      .to(camera.position, { z: 27, y: 13.0 }, 0)
+      .to(".character-rim", { opacity: 0, duration: 0.3 }, 0)
+      .to(".landing-container", { opacity: 0, duration: 0.4 }, 0)
+      .to(".landing-container", { y: "20%", duration: 0.8 }, 0)
+      .fromTo(
+        ".about-me",
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.8 },
         0
       );
 
-      tl3
-        .fromTo(
-          ".character-model",
-          { y: "0%" },
-          { y: "-100%", duration: 4, ease: "none", delay: 1 },
-          0
-        )
-        .fromTo(".whatIDO", { y: 0 }, { y: "15%", duration: 2 }, 0)
-        .to(character.rotation, { x: -0.04, duration: 2, delay: 1 }, 0);
+    tl2
+      .to(
+        camera.position,
+        { z: 74, y: 11.2, duration: 6, delay: 2, ease: "power3.inOut" },
+        0
+      )
+      .to(".about-section", { y: "15%", duration: 6 }, 0)
+      .to(".about-section", { opacity: 0, delay: 4.8, duration: 1.5 }, 0)
+      .to(character.position, { x: 0, y: 2.8, delay: 2, duration: 5 }, 0)
+      .fromTo(
+        ".character-model",
+        { pointerEvents: "inherit" },
+        { pointerEvents: "none", delay: 2 },
+        0
+      )
+      .to(character.rotation, { y: 0.45, x: 0.1, delay: 3, duration: 3 }, 0)
+      .to(neckBone!.rotation, { x: 0.45, delay: 2, duration: 3 }, 0);
+
+    if (monitor?.material) {
+      tl2.to(monitor.material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0);
     }
-  } else {
-    if (character) {
-      const tM2 = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".what-box-in",
-          start: "top 70%",
-          end: "bottom top",
-        },
-      });
-      tM2.to(".what-box-in", { display: "flex", duration: 0.1, delay: 0 }, 0);
+    if (screenLight?.material) {
+      tl2.to(screenLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0);
     }
+
+    tl2.fromTo(
+      ".what-box-in",
+      { opacity: 0, y: 35 },
+      { opacity: 1, y: 0, duration: 1.8, delay: 5.0, ease: "power2.out" },
+      0
+    );
+
+    tl3
+      .fromTo(
+        ".character-model",
+        { y: "0%" },
+        { y: "-100%", duration: 3, ease: "none", delay: 0.5 },
+        0
+      )
+      .fromTo(".whatIDO", { y: 0 }, { y: "10%", duration: 2 }, 0)
+      .to(character.rotation, { x: -0.04, duration: 2, delay: 0.5 }, 0);
   }
 }
 

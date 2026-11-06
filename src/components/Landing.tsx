@@ -1,6 +1,5 @@
 import { PropsWithChildren } from "react";
 import "./styles/Landing.css";
-import { config } from "../config";
 
 const Landing = ({ children }: PropsWithChildren) => {
   return (
@@ -20,16 +19,6 @@ const Landing = ({ children }: PropsWithChildren) => {
             <h2 className="landing-info-h2-sub">
               <div className="landing-h2-info">Modern Web Dev</div>
             </h2>
-          </div>
-          {/* Mobile photo - shows only on mobile when 3D character is hidden */}
-          <div className="mobile-photo">
-            <img
-              src="/images/mypicnbg.png"
-              alt={config.developer.fullName}
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-            />
           </div>
         </div>
         {children}

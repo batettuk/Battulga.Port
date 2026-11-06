@@ -3,7 +3,7 @@ import * as THREE from "three";
 import setCharacter from "./utils/character";
 import setLighting from "./utils/lighting";
 import { useLoading } from "../../context/LoadingProvider";
-import handleResize from "./utils/resizeUtils";
+import handleResize, { updateResponsiveCamera } from "./utils/resizeUtils";
 import {
   handleMouseMove,
   handleTouchEnd,
@@ -43,10 +43,11 @@ const Scene = () => {
       canvasDiv.current.appendChild(renderer.domElement);
 
       const camera = new THREE.PerspectiveCamera(14.5, aspect, 0.1, 1000);
-      camera.position.z = 10;
-      camera.position.set(0, 13.1, 24.7);
-      camera.zoom = 1.1;
-      camera.updateProjectionMatrix();
+      updateResponsiveCamera(
+        camera,
+        container.width || window.innerWidth,
+        container.height || window.innerHeight
+      );
 
       let headBone: THREE.Object3D | null = null;
       let screenLight: any | null = null;
@@ -95,14 +96,8 @@ const Scene = () => {
       const onMouseMove = (event: MouseEvent) => {
         handleMouseMove(event, (x, y) => (mouse = { x, y }));
       };
-      let debounce: number | undefined;
-      const onTouchStart = (event: TouchEvent) => {
-        const element = event.target as HTMLElement;
-        debounce = setTimeout(() => {
-          element?.addEventListener("touchmove", (e: TouchEvent) =>
-            handleTouchMove(e, (x, y) => (mouse = { x, y }))
-          );
-        }, 200);
+      const onTouchMove = (event: TouchEvent) => {
+        handleTouchMove(event, (x, y) => (mouse = { x, y }));
       };
 
       const onTouchEnd = () => {
@@ -113,11 +108,8 @@ const Scene = () => {
       };
 
       document.addEventListener("mousemove", onMouseMove);
-      const landingDiv = document.getElementById("landingDiv");
-      if (landingDiv) {
-        landingDiv.addEventListener("touchstart", onTouchStart);
-        landingDiv.addEventListener("touchend", onTouchEnd);
-      }
+      window.addEventListener("touchmove", onTouchMove, { passive: true });
+      window.addEventListener("touchend", onTouchEnd, { passive: true });
       const animate = () => {
         animationFrameId = requestAnimationFrame(animate);
         if (headBone) {
@@ -141,7 +133,6 @@ const Scene = () => {
       return () => {
         isMounted = false;
         cancelAnimationFrame(animationFrameId);
-        clearTimeout(debounce);
         scene.clear();
         renderer.dispose();
         if (resizeHandler) {
@@ -151,10 +142,8 @@ const Scene = () => {
           canvasDiv.current.removeChild(renderer.domElement);
         }
         document.removeEventListener("mousemove", onMouseMove);
-        if (landingDiv) {
-          landingDiv.removeEventListener("touchstart", onTouchStart);
-          landingDiv.removeEventListener("touchend", onTouchEnd);
-        }
+        window.removeEventListener("touchmove", onTouchMove);
+        window.removeEventListener("touchend", onTouchEnd);
       };
     }
   }, []);
