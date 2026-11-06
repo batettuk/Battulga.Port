@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HoverLinks from "./HoverLinks";
+import Signature from "./Signature";
 import { gsap } from "gsap";
 import Lenis from "lenis";
 import { config } from "../config";
@@ -73,9 +74,7 @@ const Navbar = () => {
   return (
     <>
       <div className="header">
-        <a href="/#" className="navbar-title" data-cursor="disable">
-          BG
-        </a>
+        <Signature />
         <a
           href={`mailto:${config.contact.email}`}
           className="navbar-connect"
