@@ -45,6 +45,16 @@
   letter-spacing: 0.8px;
   font-weight: 500;
 }
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+.navbar-brand-desktop {
+  display: inline-flex;
+}
+.navbar-brand-mobile {
+  display: none;
+}
 .navbar-title {
   font-weight: 700;
   font-size: 15px;
@@ -56,6 +66,15 @@
 .navbar-title:hover {
   opacity: 0.85;
   text-shadow: 0 0 10px rgba(176, 32, 255, 0.6);
+}
+@media only screen and (max-width: 768px) {
+  .navbar-brand-desktop {
+    display: none !important;
+  }
+  .navbar-brand-mobile {
+    display: inline-flex !important;
+    align-items: center;
+  }
 }
 @media only screen and (min-width: 500px) {
   .header {

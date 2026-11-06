@@ -63,8 +63,9 @@ const SocialIcons = () => {
       });
     }
 
-    // Scroll animation: slides signature out to the right when scrolled past landing
-    const ctx = gsap.context(() => {
+    // Scroll animation: slides signature out to the right when scrolled past landing (desktop only)
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 769px)", () => {
       gsap.to(".corner-signature", {
         x: 180,
         autoAlpha: 0,
@@ -80,7 +81,7 @@ const SocialIcons = () => {
     });
 
     return () => {
-      ctx.revert();
+      mm.revert();
     };
   }, []);
 

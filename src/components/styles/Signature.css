@@ -34,6 +34,19 @@
   }
 }
 
+/* Sizing for mobile navbar signature */
+.navbar-brand-mobile .signature-container {
+  width: 64px;
+  height: 40px;
+}
+
+@media only screen and (max-width: 420px) {
+  .navbar-brand-mobile .signature-container {
+    width: 58px;
+    height: 36px;
+  }
+}
+
 /* Base crisp white signature */
 .signature-base {
   position: absolute;
@@ -118,20 +131,11 @@
 /* Mobile & Touch: Glowing violet ink flows automatically every few seconds */
 @media (max-width: 768px), (hover: none) {
   .signature-container {
-    width: 95px;
-    height: 59px;
     animation: mobileSignaturePulse 4s ease-in-out infinite;
   }
 
   .signature-flow::after {
     animation: mobileInkFlow 4s ease-in-out infinite;
-  }
-}
-
-@media (max-width: 420px) {
-  .signature-container {
-    width: 86px;
-    height: 54px;
   }
 }
 
