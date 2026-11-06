@@ -1,21 +1,29 @@
 import * as THREE from "three";
 import gsap from "gsap";
 
+let intensity = 0;
+let intensityInterval: ReturnType<typeof setInterval> | null = null;
+if (typeof window !== "undefined" && !intensityInterval) {
+  intensityInterval = setInterval(() => {
+    intensity = Math.random();
+  }, 250);
+}
+
 export function setCharTimeline(
   character: THREE.Object3D<THREE.Object3DEventMap> | null,
   camera: THREE.PerspectiveCamera
 ) {
-  let intensity: number = 0;
-  setInterval(() => {
-    intensity = Math.random();
-  }, 200);
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+  const scrubVal = isMobile ? 0.35 : 0.6;
+
   const tl1 = gsap.timeline({
     scrollTrigger: {
       trigger: ".landing-section",
       start: "top top",
       end: "bottom top",
-      scrub: 0.6,
+      scrub: scrubVal,
       invalidateOnRefresh: true,
+      fastScrollEnd: true,
     },
   });
   const tl2 = gsap.timeline({
@@ -23,8 +31,9 @@ export function setCharTimeline(
       trigger: ".about-section",
       start: "center 55%",
       end: "bottom top",
-      scrub: 0.6,
+      scrub: scrubVal,
       invalidateOnRefresh: true,
+      fastScrollEnd: true,
     },
   });
   const tl3 = gsap.timeline({
@@ -32,8 +41,9 @@ export function setCharTimeline(
       trigger: ".whatIDO",
       start: "bottom 85%",
       end: "bottom 20%",
-      scrub: 0.6,
+      scrub: scrubVal,
       invalidateOnRefresh: true,
+      fastScrollEnd: true,
     },
   });
   let screenLight: any, monitor: any;

@@ -13,9 +13,13 @@ export const handleTouchMove = (
   event: TouchEvent,
   setMousePosition: (x: number, y: number) => void
 ) => {
-  const mouseX = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
-  const mouseY = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
-  setMousePosition(mouseX, mouseY);
+  if (event.touches.length > 0) {
+    const touch = event.touches[0];
+    // On mobile touch, reduce movement range and scale so finger scrolling doesn't violently whip the head
+    const mouseX = ((touch.clientX / window.innerWidth) * 2 - 1) * 0.45;
+    const mouseY = (-(touch.clientY / window.innerHeight) * 2 + 1) * 0.35;
+    setMousePosition(mouseX, mouseY);
+  }
 };
 
 export const handleTouchEnd = (
@@ -26,12 +30,8 @@ export const handleTouchEnd = (
     interpolationY: number
   ) => void
 ) => {
-  setTimeout(() => {
-    setMousePosition(0, 0, 0.03, 0.03);
-    setTimeout(() => {
-      setMousePosition(0, 0, 0.1, 0.2);
-    }, 1000);
-  }, 2000);
+  // Smoothly relax head back toward center after touch release
+  setMousePosition(0, 0, 0.035, 0.035);
 };
 
 export const handleHeadRotation = (
@@ -43,12 +43,18 @@ export const handleHeadRotation = (
   lerp: (x: number, y: number, t: number) => number
 ) => {
   if (!headBone) return;
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+
   if (window.scrollY < 200) {
     const maxRotation = Math.PI / 6;
+    // On mobile screens, use gentler lerping factors to prevent high-frequency jitter
+    const effectiveInterpolationY = isMobile ? 0.04 : interpolationY;
+    const effectiveInterpolationX = isMobile ? 0.03 : interpolationX;
+
     headBone.rotation.y = lerp(
       headBone.rotation.y,
       mouseX * maxRotation,
-      interpolationY
+      effectiveInterpolationY
     );
     let minRotationX = -0.3;
     let maxRotationX = 0.4;
@@ -57,20 +63,20 @@ export const handleHeadRotation = (
         headBone.rotation.x = lerp(
           headBone.rotation.x,
           -mouseY - 0.5 * maxRotation,
-          interpolationX
+          effectiveInterpolationX
         );
       } else {
         headBone.rotation.x = lerp(
           headBone.rotation.x,
           -maxRotation - 0.5 * maxRotation,
-          interpolationX
+          effectiveInterpolationX
         );
       }
     } else {
       headBone.rotation.x = lerp(
         headBone.rotation.x,
         -minRotationX - 0.5 * maxRotation,
-        interpolationX
+        effectiveInterpolationX
       );
     }
   } else {

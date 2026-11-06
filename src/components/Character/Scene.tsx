@@ -28,13 +28,25 @@ const Scene = () => {
       const aspect = container.width / container.height;
       const scene = new THREE.Scene();
 
+      const isMobile =
+        window.innerWidth <= 768 ||
+        /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+        ("ontouchstart" in window && window.innerWidth <= 1024);
+
       const renderer = new THREE.WebGLRenderer({
         alpha: true,
-        antialias: window.devicePixelRatio < 2,
-        powerPreference: "high-performance",
+        antialias: !isMobile && window.devicePixelRatio < 2,
+        powerPreference: isMobile ? "default" : "high-performance",
+        precision: isMobile ? "mediump" : "highp",
+        stencil: false,
+        depth: true,
       });
+
+      // On high-DPI mobile screens, cap DPR to 1.2 to eliminate fill-rate bottleneck
+      // (60%+ fragment shader reduction while preserving crisp Retina visuals)
+      const maxDPR = isMobile ? 1.2 : 1.75;
       renderer.setSize(container.width, container.height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDPR));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1;
 
@@ -110,8 +122,30 @@ const Scene = () => {
       document.addEventListener("mousemove", onMouseMove);
       window.addEventListener("touchmove", onTouchMove, { passive: true });
       window.addEventListener("touchend", onTouchEnd, { passive: true });
-      const animate = () => {
+
+      let lastTime = 0;
+      let frameCount = 0;
+      const targetFrameInterval = isMobile ? 1000 / 60 : 0; // Solid 60fps cadence on 120Hz mobile screens
+
+      const animate = (currentTime: number = 0) => {
         animationFrameId = requestAnimationFrame(animate);
+
+        // Frame rate limiter for mobile: keeps steady 60fps cadence on 120Hz ProMotion screens
+        if (isMobile && targetFrameInterval > 0) {
+          const elapsed = currentTime - lastTime;
+          if (elapsed < targetFrameInterval - 1) {
+            return;
+          }
+          lastTime = currentTime - (elapsed % targetFrameInterval);
+        }
+
+        // Offscreen occlusion culling: When scrolled past What I Do, character is completely offscreen
+        const isVisible = window.scrollY < window.innerHeight * 3.3;
+        if (!isVisible) {
+          return;
+        }
+
+        frameCount++;
         if (headBone) {
           handleHeadRotation(
             headBone,
@@ -121,15 +155,18 @@ const Scene = () => {
             interpolation.y,
             THREE.MathUtils.lerp
           );
-          light.setPointLight(screenLight);
+          // Only update pointLight position every 4th frame to eliminate expensive matrix traversals
+          if (frameCount % 4 === 0) {
+            light.setPointLight(screenLight);
+          }
         }
-        const delta = clock.getDelta();
+        const delta = Math.min(clock.getDelta(), 0.1);
         if (mixer) {
           mixer.update(delta);
         }
         renderer.render(scene, camera);
       };
-      animate();
+      animate(0);
       return () => {
         isMounted = false;
         cancelAnimationFrame(animationFrameId);

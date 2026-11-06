@@ -29,6 +29,9 @@ export function updateResponsiveCamera(
   camera.updateProjectionMatrix();
 }
 
+let lastWidth = typeof window !== "undefined" ? window.innerWidth : 1440;
+let lastHeight = typeof window !== "undefined" ? window.innerHeight : 900;
+
 export default function handleResize(
   renderer: THREE.WebGLRenderer,
   camera: THREE.PerspectiveCamera,
@@ -36,9 +39,24 @@ export default function handleResize(
   character: THREE.Object3D
 ) {
   if (!canvasDiv.current) return;
+  const currentWidth = window.innerWidth;
+  const currentHeight = window.innerHeight;
+
+  // On mobile browsers, the address bar slides in/out during scrolling, changing innerHeight.
+  // Rebuilding all GSAP ScrollTriggers mid-scroll causes severe stutters and frame drops.
+  const isWidthSame = Math.abs(currentWidth - lastWidth) < 4;
+  const isAddressBarToggle = isWidthSame && Math.abs(currentHeight - lastHeight) < 150;
+
+  if (isAddressBarToggle) {
+    return;
+  }
+
+  lastWidth = currentWidth;
+  lastHeight = currentHeight;
+
   const canvas3d = canvasDiv.current.getBoundingClientRect();
-  const width = canvas3d.width || window.innerWidth;
-  const height = canvas3d.height || window.innerHeight;
+  const width = canvas3d.width || currentWidth;
+  const height = canvas3d.height || currentHeight;
   renderer.setSize(width, height);
   updateResponsiveCamera(camera, width, height);
 

@@ -73,6 +73,8 @@ export function createMacBook(): THREE.Group {
     kbCtx.strokeRect(280, 328, 440, kh);
   }
   const kbTexture = new THREE.CanvasTexture(kbCanvas);
+  kbTexture.generateMipmaps = false;
+  kbTexture.minFilter = THREE.LinearFilter;
   const kbMaterial = new THREE.MeshStandardMaterial({
     map: kbTexture,
     roughness: 0.7,
@@ -157,6 +159,8 @@ export function createMacBook(): THREE.Group {
     logoCtx.restore();
   }
   const logoTexture = new THREE.CanvasTexture(logoCanvas);
+  logoTexture.generateMipmaps = false;
+  logoTexture.minFilter = THREE.LinearFilter;
   const logoMaterial = new THREE.MeshBasicMaterial({
     map: logoTexture,
     transparent: true,
@@ -257,6 +261,8 @@ export function createMacBook(): THREE.Group {
   }
 
   const screenTexture = new THREE.CanvasTexture(screenCanvas);
+  screenTexture.generateMipmaps = false;
+  screenTexture.minFilter = THREE.LinearFilter;
   const screenMaterial = new THREE.MeshStandardMaterial({
     map: screenTexture,
     emissive: new THREE.Color(0xc7a9ff),

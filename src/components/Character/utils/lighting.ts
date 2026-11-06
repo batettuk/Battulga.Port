@@ -6,17 +6,13 @@ const setLighting = (scene: THREE.Scene) => {
   const directionalLight = new THREE.DirectionalLight(0xc7a9ff, 0);
   directionalLight.intensity = 0;
   directionalLight.position.set(-0.47, -0.32, -1);
-  directionalLight.castShadow = true;
-  directionalLight.shadow.mapSize.width = 1024;
-  directionalLight.shadow.mapSize.height = 1024;
-  directionalLight.shadow.camera.near = 0.5;
-  directionalLight.shadow.camera.far = 50;
+  directionalLight.castShadow = false;
   scene.add(directionalLight);
 
   const pointLight = new THREE.PointLight(0xc2a4ff, 0, 18, 2);
   // Position light directly at the open MacBook screen surface
   pointLight.position.set(0.08, 10.2, 4.0);
-  pointLight.castShadow = true;
+  pointLight.castShadow = false;
   scene.add(pointLight);
 
   new RGBELoader()

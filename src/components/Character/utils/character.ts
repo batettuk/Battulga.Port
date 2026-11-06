@@ -32,11 +32,17 @@ const setCharacter = (
             character.traverse((child: any) => {
               if (child.isMesh) {
                 const mesh = child as THREE.Mesh;
-                child.castShadow = false;
-                child.receiveShadow = false;
+                mesh.castShadow = false;
+                mesh.receiveShadow = false;
                 mesh.frustumCulled = true;
-                if (mesh.material && !Array.isArray(mesh.material)) {
-                  (mesh.material as THREE.ShaderMaterial).precision = 'mediump';
+                if (mesh.material) {
+                  if (Array.isArray(mesh.material)) {
+                    mesh.material.forEach((m: any) => {
+                      if (m) m.precision = "mediump";
+                    });
+                  } else {
+                    (mesh.material as any).precision = "mediump";
+                  }
                 }
               }
             });
