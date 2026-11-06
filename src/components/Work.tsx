@@ -4,57 +4,14 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FiLayers, FiCpu, FiExternalLink, FiTerminal, FiZap } from "react-icons/fi";
 import { config } from "../config";
+import { useLanguage } from "../context/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const roadmapItems = [
-  {
-    icon: FiCpu,
-    number: "01",
-    title: "3D & Visual Fidelity",
-    description: "Perfecting custom MacBook Pro typing animations, procedural screen light beams, and real-time head tracking.",
-    tag: "Three.js / WebGL",
-  },
-  {
-    icon: FiLayers,
-    number: "02",
-    title: "SaaS & API Integration",
-    description: "Connecting dynamic data layers and query mutations using Erxes SaaS APIs and intelligent AI workflows.",
-    tag: "GraphQL / Erxes API",
-  },
-  {
-    icon: FiZap,
-    number: "03",
-    title: "Performance & Mobile UX",
-    description: "Streamlining bundle payloads, 60fps WebGL execution, and fluid gesture handling across all mobile viewports.",
-    tag: "Vite / Performance",
-  },
-];
-
-const technicalPillars = [
-  {
-    num: "01",
-    title: "3D WebGL Interactions",
-    desc: "Custom MacBook Pro rigging with glowing Apple logo, volumetric screen light, and interactive head rotation.",
-  },
-  {
-    num: "02",
-    title: "GSAP Scroll Choreography",
-    desc: "Camera perspective transitions, responsive scroll-triggered scrubbing, and fluid layout transforms.",
-  },
-  {
-    num: "03",
-    title: "Minimalist UI Architecture",
-    desc: "Handcrafted typography, dark luxury violet aesthetics, and high-performance React + TypeScript architecture.",
-  },
-  {
-    num: "04",
-    title: "SaaS & AI Integration Ready",
-    desc: "Engineered to integrate Erxes SaaS API query/mutations and AI-assisted automation pipelines.",
-  },
-];
+const roadmapIcons = [FiCpu, FiLayers, FiZap];
 
 const Work = () => {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -136,10 +93,10 @@ const Work = () => {
         {/* Section Header */}
         <div className="focus-header">
           <h2>
-            Current <span>Focus</span>
+            {t.focus.titleMain}<span>{t.focus.titleSpan}</span>
           </h2>
           <p className="focus-subtitle">
-            Iterating on interactive 3D WebGL interactions, clean minimalist design, and modern front-end engineering.
+            {t.focus.subtitle}
           </p>
         </div>
 
@@ -156,17 +113,15 @@ const Work = () => {
           <div className="focus-card-grid">
             {/* Left Column: Vision & Architecture */}
             <div className="focus-info-col">
-              <h3 className="focus-project-title">Interactive 3D Portfolio</h3>
+              <h3 className="focus-project-title">{t.focus.projectTitle}</h3>
 
               <p className="focus-desc">
-                My primary focus is engineering and refining this interactive web portfolio. Rather than presenting static pages,
-                I am pushing modern front-end boundaries—combining real-time Three.js 3D character interactions, custom-rigged
-                MacBook Pro hardware with volumetric lighting, and silky GSAP timeline choreographies into one unified, minimalist experience.
+                {t.focus.projectDesc}
               </p>
 
               {/* Technical Pillars Grid */}
               <div className="focus-pillars-grid">
-                {technicalPillars.map((pillar, idx) => (
+                {t.focus.pillars.map((pillar, idx) => (
                   <div className="focus-pillar-item" key={idx}>
                     <div className="pillar-num">{pillar.num}</div>
                     <div>
@@ -231,11 +186,11 @@ const Work = () => {
                 {/* Telemetry Footer */}
                 <div className="preview-bottom-bar">
                   <div className="telemetry-item">
-                    <span className="telemetry-label">ENGINE</span>
+                    <span className="telemetry-label">{t.focus.engineLabel}</span>
                     <span className="telemetry-val">Three.js + GSAP</span>
                   </div>
                   <div className="telemetry-item">
-                    <span className="telemetry-label">ARCHITECTURE</span>
+                    <span className="telemetry-label">{t.focus.archLabel}</span>
                     <span className="telemetry-val">React + TypeScript</span>
                   </div>
                   <a
@@ -245,7 +200,7 @@ const Work = () => {
                     className="telemetry-link"
                     data-cursor="disable"
                   >
-                    <span>View GitHub</span>
+                    <span>{t.focus.viewGithub}</span>
                     <FiExternalLink />
                   </a>
                 </div>
@@ -256,13 +211,13 @@ const Work = () => {
 
         {/* 3 Strategic Roadmap Cards */}
         <div className="focus-roadmap-header">
-          <h3>Active Development Roadmap</h3>
-          <p>Key technical milestones currently in progress across this platform.</p>
+          <h3>{t.focus.roadmapTitle}</h3>
+          <p>{t.focus.roadmapSubtitle}</p>
         </div>
 
         <div className="focus-roadmap-grid">
-          {roadmapItems.map((item, index) => {
-            const Icon = item.icon;
+          {t.focus.roadmapItems.map((item, index) => {
+            const Icon = roadmapIcons[index] || FiCpu;
             return (
               <div key={index} className="roadmap-card">
                 <div className="roadmap-top">

@@ -9,8 +9,10 @@ import { TbNotes } from "react-icons/tb";
 import { useEffect } from "react";
 import HoverLinks from "./HoverLinks";
 import { config } from "../config";
+import { useLanguage } from "../context/LanguageContext";
 
 const SocialIcons = () => {
+  const { t } = useLanguage();
   useEffect(() => {
     const social = document.getElementById("social") as HTMLElement;
 
@@ -82,7 +84,7 @@ const SocialIcons = () => {
         </span>
       </div>
       <a className="resume-button" href="#">
-        <HoverLinks text="RESUME" />
+        <HoverLinks text={t.nav.resume} />
         <span>
           <TbNotes />
         </span>

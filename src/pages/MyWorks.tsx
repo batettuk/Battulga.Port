@@ -1,22 +1,29 @@
 import { Link } from "react-router-dom";
-import { config } from "../config";
+import { useLanguage } from "../context/LanguageContext";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 import "./MyWorks.css";
 
 const MyWorks = () => {
+  const { t } = useLanguage();
+
   return (
     <div className="myworks-page">
-      <div className="myworks-header">
+      <div className="myworks-nav-row">
         <Link to="/" className="back-button" data-cursor="disable">
-          ← Back to Home
+          {t.myWorks.back}
         </Link>
+        <LanguageSwitcher />
+      </div>
+
+      <div className="myworks-header">
         <h1>
-          All <span>Works</span>
+          {t.myWorks.titleAll}<span>{t.myWorks.titleWorks}</span>
         </h1>
-        <p>A collection of all my projects and creations</p>
+        <p>{t.myWorks.subtitle}</p>
       </div>
 
       <div className="myworks-grid">
-        {config.projects.map((project, index) => {
+        {t.myWorks.projects.map((project, index) => {
           const isInternalLink = Boolean(project.link?.startsWith("/"));
           const cardContent = (
             <>
@@ -33,7 +40,7 @@ const MyWorks = () => {
             </>
           );
 
-          if (isInternalLink) {
+          if (isInternalLink && project.link) {
             return (
               <Link
                 className="myworks-card"

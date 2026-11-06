@@ -116,14 +116,16 @@
     margin: 0 auto;
     display: inline-flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     background: rgba(14, 10, 18, 0.72);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(194, 164, 255, 0.2);
     border-radius: 20px;
-    padding: 6px 18px;
+    padding: 6px 14px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
   }
 
@@ -135,10 +137,10 @@
     width: auto !important;
     max-width: 100% !important;
     margin: 0 !important;
-    line-height: 1.2 !important;
-    white-space: nowrap !important;
-    word-break: keep-all !important;
-    overflow-wrap: normal !important;
+    line-height: 1.25 !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
     text-align: center;
     height: auto !important;
     transform: none !important;
@@ -149,21 +151,21 @@
     display: inline-block !important;
     content: "•";
     color: rgba(194, 164, 255, 0.4);
-    margin: 0 4px 0 8px;
+    margin: 0 4px 0 6px;
   }
 
   .landing-h2-1 {
-    font-size: 13px !important;
+    font-size: 11px !important;
     color: var(--accentColor);
     font-weight: 700;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.8px;
     display: inline-block;
   }
 
   .landing-h2-info {
-    font-size: 12px !important;
+    font-size: 10.5px !important;
     color: rgba(255, 255, 255, 0.88);
-    letter-spacing: 1px;
+    letter-spacing: 0.6px;
     font-weight: 600;
     display: inline-block;
   }

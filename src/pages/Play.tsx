@@ -4,6 +4,8 @@ import { Chess, Square, PieceSymbol, Color } from "chess.js";
 import RedoxChessEngine from "../utils/redoxchessEngine";
 import * as THREE from "three";
 import NET from "vanta/dist/vanta.net.min";
+import { useLanguage } from "../context/LanguageContext";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 import "./Play.css";
 
 // Piece SVG components matching chess.com style with custom colors
@@ -39,7 +41,8 @@ interface ChatMessage {
 
 // API key is now handled server-side in api/chat.js
 
-const SYSTEM_PROMPT = `You are the portfolio chat persona for Battulga Gerelt-Od. Speak in Battulga's first-person voice ("I", "my", "me") as a warm, technically sharp representative of him. Be honest: use only the facts below and say when something is not known. Never invent employers, awards, clients, metrics, dates, repository details, or personal information.
+const getSystemPrompt = (lang: "en" | "mn") => `You are the portfolio chat persona for Battulga Gerelt-Od. Speak in Battulga's first-person voice ("I", "my", "me") as a warm, technically sharp representative of him. Be honest: use only the facts below and say when something is not known. Never invent employers, awards, clients, metrics, dates, repository details, or personal information.
+Current interface language is: ${lang === "mn" ? "Mongolian (Cyrillic)" : "English"}. Please reply in ${lang === "mn" ? "Mongolian (Cyrillic)" : "English"}, unless the user asks in the other language.
 
 Profile:
 - Name: Battulga Gerelt-Od (preferred name: Battulga); based in Mongolia.
@@ -60,6 +63,7 @@ Conversation rules:
 8. If the user sends a greeting or small talk, reply in 1-2 short sentences and do not dump profile details unless asked.`;
 
 const Play = () => {
+  const { t, language } = useLanguage();
   const vantaRef = useRef<HTMLDivElement>(null);
   const [game, setGame] = useState(new Chess());
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
@@ -78,10 +82,20 @@ const Play = () => {
 
   // Chat state
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    { role: 'assistant', content: 'Hello there! I am Battulga 👋 Ask me anything you want to know!' }
+    { role: 'assistant', content: t.play.chatGreeting }
   ]);
   const [chatInput, setChatInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+
+  // Sync greeting if unchanged
+  useEffect(() => {
+    setChatMessages((prev) => {
+      if (prev.length === 1 && prev[0].role === 'assistant') {
+        return [{ role: 'assistant', content: t.play.chatGreeting }];
+      }
+      return prev;
+    });
+  }, [t.play.chatGreeting]);
 
   const files = boardFlipped ? ['h', 'g', 'f', 'e', 'd', 'c', 'b', 'a'] : ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
   const ranks = boardFlipped ? ['1', '2', '3', '4', '5', '6', '7', '8'] : ['8', '7', '6', '5', '4', '3', '2', '1'];
@@ -124,22 +138,23 @@ const Play = () => {
   }, []);
 
   const updateGameStatus = useCallback((g: Chess) => {
+    const isMn = language === 'mn';
     if (g.isCheckmate()) {
-      const winner = g.turn() === 'w' ? 'Black' : 'White';
-      setGameStatus(`Checkmate! ${winner} wins!`);
+      const winner = g.turn() === 'w' ? (isMn ? 'Хар' : 'Black') : (isMn ? 'Цагаан' : 'White');
+      setGameStatus(isMn ? `Мад боллоо! ${winner} хожлоо!` : `Checkmate! ${winner} wins!`);
       setShowGameOverModal(true);
     } else if (g.isDraw()) {
-      if (g.isStalemate()) setGameStatus('Draw by stalemate');
-      else if (g.isThreefoldRepetition()) setGameStatus('Draw by repetition');
-      else if (g.isInsufficientMaterial()) setGameStatus('Draw by insufficient material');
-      else setGameStatus('Draw');
+      if (g.isStalemate()) setGameStatus(isMn ? 'Патаар тэнцлээ' : 'Draw by stalemate');
+      else if (g.isThreefoldRepetition()) setGameStatus(isMn ? '3 давталтаар тэнцлээ' : 'Draw by repetition');
+      else if (g.isInsufficientMaterial()) setGameStatus(isMn ? 'Хангалтгүй хүчээр тэнцлээ' : 'Draw by insufficient material');
+      else setGameStatus(isMn ? 'Тэнцээ' : 'Draw');
       setShowGameOverModal(true);
     } else if (g.isCheck()) {
-      setGameStatus(g.turn() === 'w' ? 'White is in check!' : 'Black is in check!');
+      setGameStatus(g.turn() === 'w' ? (isMn ? 'Цагаанд шаглаа!' : 'White is in check!') : (isMn ? 'Харанд шаглаа!' : 'Black is in check!'));
     } else {
-      setGameStatus(g.turn() === 'w' ? "White's turn" : "Black's turn");
+      setGameStatus(g.turn() === 'w' ? (isMn ? 'Цагааны ээлж' : "White's turn") : (isMn ? 'Харын ээлж' : "Black's turn"));
     }
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     updateGameStatus(game);
@@ -255,7 +270,7 @@ const Play = () => {
     setCapturedWhite([]);
     setCapturedBlack([]);
     setLastMove(null);
-    setGameStatus("White's turn");
+    setGameStatus(language === 'mn' ? "Цагааны ээлж" : "White's turn");
     setShowGameOverModal(false);
     if (!keepFlip) {
       setBoardFlipped(false);
@@ -265,7 +280,7 @@ const Play = () => {
   const flipBoard = () => {
     // If game is in progress, ask to start new game
     if (moveHistory.length > 0) {
-      if (window.confirm('Start new game with flipped sides?')) {
+      if (window.confirm(language === 'mn' ? 'Талуудыг сольж шинэ тоглолт эхлүүлэх үү?' : 'Start new game with flipped sides?')) {
         setBoardFlipped((prev) => !prev);
         resetGame(true);
       }
@@ -284,7 +299,7 @@ const Play = () => {
 
     try {
       const messages = [
-        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'system', content: getSystemPrompt(language) },
         ...chatMessages.filter(m => m.role !== 'system').map(m => ({
           role: m.role,
           content: m.content
@@ -374,15 +389,16 @@ const Play = () => {
       {/* Header */}
       <div className="play-header">
         <Link to="/" className="back-button" data-cursor="disable">
-          ← Back to Home
+          {t.play.back}
         </Link>
+        <LanguageSwitcher />
       </div>
 
       <div className="chess-container">
         {/* Chat Panel - Left Side */}
         <div className="chat-panel">
           <div className="chat-header">
-            <span className="chat-title">💬 Talk with me</span>
+            <span className="chat-title">💬 {t.play.chatTitle}</span>
           </div>
           <div className="chat-messages">
             {chatMessages.map((msg, index) => (
@@ -402,13 +418,13 @@ const Play = () => {
             <input
               type="text"
               className="chat-input"
-              placeholder="Type a message..."
+              placeholder={t.play.chatPlaceholder}
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
               onKeyPress={handleKeyPress}
               data-cursor="disable"
             />
-            <button className="chat-send-btn" onClick={sendMessage} data-cursor="disable">
+            <button className="chat-send-btn" onClick={sendMessage} data-cursor="disable" title={t.play.send}>
               ➤
             </button>
           </div>
@@ -424,7 +440,11 @@ const Play = () => {
               </div>
               <div className="player-details">
                 <span className="player-name">Battulga</span>
-                <span className="player-rating">{engineThinking ? '🤔 Thinking...' : (botColor === 'w' ? 'White' : 'Black')}</span>
+                <span className="player-rating">
+                  {engineThinking
+                    ? (language === 'mn' ? '🤔 Бодож байна...' : '🤔 Thinking...')
+                    : (botColor === 'w' ? t.play.white : t.play.black)}
+                </span>
               </div>
             </div>
             <div className="captured-pieces">
@@ -484,8 +504,8 @@ const Play = () => {
                 <span>👤</span>
               </div>
               <div className="player-details">
-                <span className="player-name">You</span>
-                <span className="player-rating">{playerColor === 'w' ? 'White' : 'Black'}</span>
+                <span className="player-name">{t.play.you}</span>
+                <span className="player-rating">{playerColor === 'w' ? t.play.white : t.play.black}</span>
               </div>
             </div>
             <div className="captured-pieces">
@@ -503,7 +523,7 @@ const Play = () => {
 
           {/* Move History */}
           <div className="move-history">
-            <div className="move-history-header">Moves</div>
+            <div className="move-history-header">{t.play.moves}</div>
             <div className="move-history-list">
               {formatMoveHistory().map((move, index) => (
                 <div key={index} className="move-row">
@@ -518,10 +538,10 @@ const Play = () => {
           {/* Controls */}
           <div className="game-controls">
             <button onClick={() => resetGame(false)} className="control-btn" data-cursor="disable">
-              New Game
+              {t.play.newGame}
             </button>
             <button onClick={flipBoard} className="control-btn" data-cursor="disable">
-              Flip Board
+              {t.play.flipBoard}
             </button>
           </div>
         </div>
@@ -540,27 +560,27 @@ const Play = () => {
               ×
             </button>
             <div className="game-over-badge">
-              {game.isCheckmate() ? '🏆 CHECKMATE' : '🤝 DRAW'}
+              {game.isCheckmate() ? t.play.checkmate : t.play.draw}
             </div>
-            <h2 className="game-over-title">Game Over</h2>
+            <h2 className="game-over-title">{t.play.gameOver}</h2>
             <p className="game-over-subtitle">
               {game.isCheckmate()
                 ? (game.turn() === playerColor
-                    ? 'Battulga wins this match!'
-                    : 'Congratulations! You won the game! 🎉')
-                : 'The game ended in a draw.'}
+                    ? t.play.battulgaWins
+                    : t.play.youWon)
+                : t.play.drawMsg}
             </p>
             <div className="game-over-stats">
               <div className="game-over-stat">
-                <span className="stat-label">Result</span>
+                <span className="stat-label">{t.play.result}</span>
                 <span className="stat-val">
                   {game.isCheckmate()
-                    ? `${game.turn() === 'w' ? 'Black' : 'White'} Wins`
-                    : 'Draw'}
+                    ? (game.turn() === 'w' ? t.play.blackWins : t.play.whiteWins)
+                    : t.play.draw}
                 </span>
               </div>
               <div className="game-over-stat">
-                <span className="stat-label">Total Moves</span>
+                <span className="stat-label">{t.play.totalMoves}</span>
                 <span className="stat-val">{moveHistory.length}</span>
               </div>
             </div>
@@ -570,14 +590,14 @@ const Play = () => {
                 onClick={() => resetGame(true)}
                 data-cursor="disable"
               >
-                Play Again
+                {t.play.playAgain}
               </button>
               <button
                 className="game-over-btn secondary"
                 onClick={() => setShowGameOverModal(false)}
                 data-cursor="disable"
               >
-                Review Board
+                {t.play.reviewBoard}
               </button>
             </div>
           </div>

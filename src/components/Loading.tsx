@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import "./styles/Loading.css";
 import { useLoading } from "../context/LoadingProvider";
+import { useLanguage } from "../context/LanguageContext";
 import { config } from "../config";
 
 import Marquee from "react-fast-marquee";
 
 const Loading = ({ percent }: { percent: number }) => {
   const { setIsLoading } = useLoading();
+  const { t } = useLanguage();
   const [loaded, setLoaded] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -63,8 +65,8 @@ const Loading = ({ percent }: { percent: number }) => {
       <div className="loading-screen">
         <div className="loading-marquee">
           <Marquee>
-            <span>&nbsp; Front-End Developer &nbsp;</span> <span>&nbsp; Modern Web Developer &nbsp;</span>
-            <span>&nbsp; Front-End Developer &nbsp;</span> <span>&nbsp; Minimalist Design &nbsp;</span>
+            <span>&nbsp; {t.loader.role1} &nbsp;</span> <span>&nbsp; {t.loader.role2} &nbsp;</span>
+            <span>&nbsp; {t.loader.role1} &nbsp;</span> <span>&nbsp; {t.loader.role3} &nbsp;</span>
           </Marquee>
         </div>
         <div
@@ -76,13 +78,13 @@ const Loading = ({ percent }: { percent: number }) => {
             <div className="loading-container">
               <div className="loading-content">
                 <div className="loading-content-in">
-                  Loading <span>{percent}%</span>
+                  {t.loader.loading} <span>{percent}%</span>
                 </div>
               </div>
               <div className="loading-box"></div>
             </div>
             <div className="loading-content2">
-              <span>Welcome</span>
+              <span>{t.loader.welcome}</span>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { MdArrowOutward, MdCopyright } from "react-icons/md";
 import "./styles/Contact.css";
 import { config } from "../config";
+import { useLanguage } from "../context/LanguageContext";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
@@ -10,6 +11,7 @@ import DOTS from "vanta/dist/vanta.dots.min";
 gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
+  const { t } = useLanguage();
   const vantaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -106,19 +108,19 @@ const Contact = () => {
         <h3>{config.developer.fullName}</h3>
         <div className="contact-flex">
           <div className="contact-box">
-            <h4>Email</h4>
+            <h4>{t.contact.emailLabel}</h4>
             <p>
               <a href={`mailto:${config.contact.email}`} data-cursor="disable">
                 {config.contact.email}
               </a>
             </p>
-            <h4>Location</h4>
+            <h4>{t.contact.locationLabel}</h4>
             <p>
-              <span>{config.social.location}</span>
+              <span>{t.contact.locationVal}</span>
             </p>
           </div>
           <div className="contact-box">
-            <h4>Social</h4>
+            <h4>{t.contact.socialLabel}</h4>
             <a
               href={config.contact.github}
               target="_blank"
@@ -158,7 +160,7 @@ const Contact = () => {
           </div>
           <div className="contact-box">
             <h2>
-              Designed and Developed <br /> by <span>{config.developer.fullName}</span>
+              {t.contact.footerTitle1}<br />{t.contact.footerTitle2}<span>{config.developer.fullName}</span>
             </h2>
             <h5>
               <MdCopyright /> {new Date().getFullYear()}
