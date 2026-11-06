@@ -53,7 +53,7 @@ export class TextSplitter {
     element.innerHTML = chars
       .map((char) => {
         if (char === " ") {
-          return '<span class="split-char"> </span>';
+          return '<span class="split-char">&nbsp;</span>';
         }
         if (char === "\n") {
           return "<br>";
