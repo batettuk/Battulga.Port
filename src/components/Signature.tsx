@@ -26,3 +26,4 @@ const Signature: React.FC<SignatureProps> = ({ className = "", onClick }) => {
 };
 
 export default Signature;
+

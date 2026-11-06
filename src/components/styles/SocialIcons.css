@@ -6,6 +6,7 @@
   z-index: 99;
   left: 50%;
   transform: translateX(-50%);
+  pointer-events: none;
 }
 .social-icons {
   position: absolute;
@@ -16,6 +17,7 @@
   gap: 8px;
   z-index: 999;
   padding: 10px;
+  pointer-events: auto;
 }
 .social-icons:hover {
   transition: 0.3s;
@@ -43,34 +45,16 @@
   will-change: left, top;
   transition: transform 0.3s ease-out;
 }
-.resume-button {
+.corner-signature {
   position: absolute;
-  z-index: 99;
-  display: flex;
-  gap: 5px;
-  bottom: 40px;
-  right: 0;
-  width: auto;
-  text-wrap: nowrap;
-  letter-spacing: 4px;
-  font-size: 15px;
-  line-height: 15px;
-  font-weight: 600;
-  color: #5e5e5e;
-  cursor: pointer;
-  transition: 0.5s;
-  transform-origin: left bottom;
-  transform: translateX(100%) rotateZ(-90deg);
-}
-.resume-button:hover {
-  color: #fff;
-}
-div.resume-button span {
-  color: #fff;
-  font-size: 17px;
-  margin-top: -1px;
+  right: -5px;
+  bottom: 22px;
+  pointer-events: auto;
+  z-index: 100;
   display: flex;
   align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
 }
 .check-line {
   position: fixed;
@@ -91,13 +75,14 @@ div.resume-button span {
   }
 }
 @media only screen and (min-width: 768px) {
-  .resume-button {
-    transform: none;
-    font-size: 20px;
-    line-height: 20px;
+  .corner-signature {
+    bottom: 28px;
+    right: -10px;
   }
-  div.resume-button span {
-    font-size: 23px;
-    margin-top: -1.5px;
+}
+@media only screen and (min-width: 1200px) {
+  .corner-signature {
+    bottom: 35px;
+    right: -15px;
   }
 }

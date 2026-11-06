@@ -47,8 +47,15 @@
 }
 .navbar-title {
   font-weight: 700;
-  font-size: 13px;
-  letter-spacing: 0.2px;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: opacity 0.25s ease, text-shadow 0.25s ease;
+}
+.navbar-title:hover {
+  opacity: 0.85;
+  text-shadow: 0 0 10px rgba(176, 32, 255, 0.6);
 }
 @media only screen and (min-width: 500px) {
   .header {
