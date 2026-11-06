@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 const roadmapIcons = [FiCpu, FiLayers, FiZap];
 
 const Work = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -175,7 +175,7 @@ const Work = () => {
                 {/* Screenshot / Preview Image */}
                 <div className="preview-image-wrapper">
                   <img
-                    src="/images/portfolio-preview.png"
+                    src={language === "mn" ? "/images/portfolio-preview-mn.png" : "/images/portfolio-preview.png"}
                     alt="G.Battulga Portfolio Live Preview"
                     className="preview-img"
                   />

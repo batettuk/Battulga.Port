@@ -12,6 +12,7 @@
   box-sizing: border-box;
   z-index: 2;
   pointer-events: none;
+  scroll-margin-top: 80px;
 }
 
 .about-me {

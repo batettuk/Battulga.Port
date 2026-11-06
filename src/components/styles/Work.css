@@ -367,6 +367,15 @@
   background: rgba(0, 0, 0, 0.3);
   padding: 4px 12px;
   border-radius: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.browser-url span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .url-icon {
@@ -668,6 +677,7 @@
 @media screen and (max-width: 768px) {
   .work-section {
     padding: 80px 0 100px;
+    scroll-margin-top: 80px;
   }
 
   .focus-container {
@@ -680,9 +690,9 @@
   }
 
   .focus-main-card {
-    padding: 30px 20px;
+    padding: 26px 16px;
     border-radius: 18px;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
   }
 
   .focus-pillars-grid {
@@ -699,12 +709,60 @@
     border-radius: 14px;
   }
 
+  .preview-top-bar {
+    padding: 8px 12px;
+    gap: 6px;
+  }
+
+  .browser-url {
+    font-size: 10px;
+    padding: 3px 8px;
+    max-width: 60%;
+  }
+
+  .preview-status-pill {
+    font-size: 10px;
+  }
+
   .preview-bottom-bar {
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+
+  .focus-roadmap-header {
+    margin-bottom: 24px;
+    padding: 0 12px;
+  }
+
+  .focus-roadmap-header h3 {
+    font-size: 21px;
+    line-height: 1.35;
+    margin-bottom: 8px;
+  }
+
+  .focus-roadmap-header p {
+    font-size: 13px;
+    line-height: 1.5;
   }
 
   .focus-roadmap-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .focus-main-card {
+    padding: 22px 12px;
+  }
+
+  .browser-url {
+    font-size: 9px;
+    padding: 2px 6px;
+    max-width: 55%;
+  }
+
+  .focus-roadmap-header h3 {
+    font-size: 19px;
   }
 }
